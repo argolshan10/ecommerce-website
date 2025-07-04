@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from core.models import product
-
+from django.db.models.signals import post_save
 
 # Create your models here.
 
@@ -23,6 +23,12 @@ class PostingAddress(models.Model):
     def __str__(self):
         return f'Posting Address - {str(self.id)}'
 
+
+def create_posting(sender, instance, created, **kwargs):
+    if created:
+        user_posting = PostingAddress(user=instance)
+        user_posting.save()
+post_save.connect(create_posting , sender = User)
 
 
 # order model
