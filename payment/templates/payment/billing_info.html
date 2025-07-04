@@ -11,8 +11,8 @@
         <header class="bg-dark py-5" style="background-color: #8B0000 !important">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder" style="color: #FFD700 !important"> Check Out </h1>
-                    <p class="lead fw-normal text-white-50 mb-0" style="color: #FFD700 !important">Review your order</p>
+                    <h1 class="display-4 fw-bolder" style="color: #FFD700 !important"> Billing Info </h1>
+                    <p class="lead fw-normal text-white-50 mb-0" style="color: #FFD700 !important">Please Enter your payment Info</p>
                 </div>
             </div>
         </header>
@@ -53,16 +53,31 @@
                            Posting Info
                        </div>
                    <div class="card-body">
-                       <form method="POST" action="{% url 'billing_info' %}">
-                           {% csrf_token %}
-                       {{ posting_form.as_p }}
+
+                       Name: {{ posting_info.posting_full_name }}<br/>
+                       Email: {{ posting_info.posting_email }}<br/>
+                       Address 1: {{ posting_info.posting_address1 }}<br/>
+                       Address 2: {{ posting_info.posting_address2 }}<br/>
+                       City: {{ posting_info.posting_city }}<br/>
+                       State: {{ posting_info.posting_state }}<br/>
+                       Zipcode: {{ posting_info.posting_zipcode }}<br/>
+                       Country: {{ posting_info.posting_country }}<br/>
+                       <br/><br/>
+                       <a href="{% url 'checkout' %}" class="btn btn-outline-secondary">Update Posting Info</a>
+                   </div>
+                   </div>
+                   <br/><br/><br/><br/>
+                  <div class="card">
+                       <div class="card-header">
+                           Billing Info
+                       </div>
+                   <div class="card-body">
+                       {{ billing_form.as_p }}
                    </div>
                    </div>
                    <br/><br/>
-                   <button type="submit"  class="btn btn-secondary">
-                       Continue to Billing
-                   </button>
-                   </form>
+                   <a href="#" class="btn btn-secondary">Pay Now</a>
+
                    <br/><br/>
                </div>
            </div>
