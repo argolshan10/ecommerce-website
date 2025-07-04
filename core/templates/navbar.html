@@ -1,0 +1,61 @@
+<style>
+    body {
+        background-color: #FFD700;
+    }
+    .navbar-brand {
+    color: #8B0000 !important;
+}
+
+    .custom-navbar {
+        background-color: #FFD700 !important; /* bright gold/yellow */
+    }
+</style>
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light custom-navbar">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="{% url 'home' %}">ALIREZA'S ONLINE SHOP</a> 
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'home' %}" style="color: #8B0000" >Home</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'search' %}" style="color: #8B0000" >Search</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'About' %}" style="color: #8B0000">About</a></li>
+                {% if user.is_authenticated %}
+                 <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #8B0000">Profile</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'update_user' %}">User Profile</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="{% url 'update_info'  %}">User Info</a></li>
+                    </ul>
+                </li>
+
+
+                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}" style="color: #8B0000">Logout</a></li>
+                {% else %} 
+                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}" style="color: #8B0000">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'register' %}" style="color: #8B0000">Register</a></li>
+                {% endif %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #8B0000">Categories</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'category_summary' %}">All Products</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'programming-books' %}">Programing Books</a></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'marketing-books' %}">Marketing Books</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="d-flex" style="background-color: #8B0000 ; border-radius: 7px ;">
+                <a href = "{% url 'card_summary' %}" class = "btn btn-outline-dark" style="color: #FFD700 ;"><i class ="bi-cart-fill me-1"  ></i>
+                    Cart
+                    <span class = " badge bg-dark text-white ms-1 rounded-pill" id = "cart-quantity"  style="color: #8B0000 !important ;  background-color: #FFD700 !important ; ">
+                        {{ card | length }}  
+                    </span>
+
+                </a>
+            </form>
+        </div>
+    </div>
+</nav>

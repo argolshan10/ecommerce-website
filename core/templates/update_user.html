@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<header class="bg-dark py-5"  style="background-color: #8B0000 !important">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder" style="color: #FFD700 !important; font-family: 'Cinzel', serif; text-transform: uppercase; letter-spacing: 1px;">Update Profile</h1>
+            <p class="lead fw-normal text-white-50 mb-0" style="color: #FFD700 !important; font-family: 'Cinzel', serif; text-transform: uppercase; letter-spacing: 1px;"> Update User Profile </p>
+        </div>
+    </div>
+</header>
+<div class = 'container'>
+    <div class = 'row'>
+        <center>
+            <div class = 'col-8'>
+                <form method="POST" action={% url 'update_user' %}>
+                    {%  csrf_token  %}
+                    <br/>
+                    {{ user_form.as_p }}
+                    <br/><br/>
+                    <button type = "submit" class = "btn btn-secondary" style="background-color : #8B0000 ; color: #FFD700 !important; font-family: 'Cinzel', serif; text-transform: uppercase; letter-spacing: 1px; border: 2px solid #8B0000 ">
+                        Update Profile
+                    </button>
+                    <br/> <br/>
+                </form>
+                <a href="{% url 'update_password' %}" class="btn btn-success">Update Password</a>
+                <br/><br/>
+            </div>
+        </center>
+    </div>
+</div>
+{% endblock %}
