@@ -3,11 +3,42 @@ from pyexpat.errors import messages
 from django.contrib import messages
 from card.Card  import Card
 from payment.forms import PostingForm , PaymentForm
-from payment.models import PostingAddress
-
+from payment.models import PostingAddress ,OrderItem ,Order
+from django.contrib.auth.models import User
 
 # Create your views here.
 
+def process_order(request):
+    if request.POST:
+        cart = Card(request)
+        cart_products = cart.get_prods()
+        quantities = cart.get_quants()
+        totals = cart.totals()
+        # get billing info from the billing page
+        payment_form = PaymentForm(request.POST or None)
+
+        # get posting session data
+        my_posting = request.session.get('my_posting')
+        full_name = my_posting['posting_full_name']
+        email = my_posting['posting_email']
+        posting_address = f"{my_posting['posting_address1']}\n{my_posting['posting_address2']}\n{my_posting['posting_city']}\n{my_posting['posting_state']}\n{my_posting['posting_zipcode']}\n{my_posting['posting_country']}"
+        amount_paid = totals
+
+        # create an order
+        if request.user.is_authenticated:
+            user = request.user
+            create_order = Order(user=user , full_name= full_name , email=email , posting_address=posting_address , amount_paid=amount_paid)
+            create_order.save()
+            messages.success(request, "Order Placed")
+            return redirect('home')
+        else :
+            create_order = Order(full_name=full_name, email=email, posting_address=posting_address, amount_paid=amount_paid)
+            create_order.save()
+            messages.success(request, "Order Placed")
+            return redirect('home')
+    else :
+        messages.success(request , "Access Denied")
+        return redirect('home')
 def billing_info(request):
     if request.POST:
         cart = Card(request)
@@ -15,6 +46,9 @@ def billing_info(request):
         quantities = cart.get_quants()
         totals = cart.totals()
 
+        # create a session with posting info
+        my_posting = request.POST
+        request.session['my_posting'] = my_posting
         # check to see if user is logged in
         if request.user.is_authenticated:
             billing_form = PaymentForm()

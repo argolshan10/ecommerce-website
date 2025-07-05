@@ -11,8 +11,8 @@
         <header class="bg-dark py-5" style="background-color: #8B0000 !important">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder" style="color: #FFD700 !important"> Billing Info </h1>
-                    <p class="lead fw-normal text-white-50 mb-0" style="color: #FFD700 !important">Please Enter your payment Info</p>
+                    <h1 class="display-4 fw-bolder" style="color: #FFD700 !important">Processing Order</h1>
+                    <p class="lead fw-normal text-white-50 mb-0" style="color: #FFD700 !important">This is temporary</p>
                 </div>
             </div>
         </header>
@@ -73,14 +73,14 @@
                        </div>
                    <div class="card-body">
                        <form method="POST" action="{% url 'process_order' %}">
-                           {% csrf_token %}
+                           {{% csrf_token %}}
                             {{ billing_form.as_p }}
 
                    </div>
                    </div>
                    <br/><br/>
                    <button type="submit" class="btn btn-secondary">Pay Now</button>
-                    </form>
+                   </form>
                    <br/><br/>
                </div>
            </div>
