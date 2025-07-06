@@ -45,6 +45,13 @@ def process_order(request):
                     if int(key) == product.id:
                         create_order_item = OrderItem( order_fk=create_order, product_fk=product, user=user, quantity=value, price=price)
                         create_order_item.save()
+
+            # delete our cart
+            for key in list(request.session.keys()):
+                if key == "cart":
+                    # Delete the key
+                    del request.session[key]
+
             messages.success(request, "Order Placed")
             return redirect('home')
         else :
@@ -65,6 +72,10 @@ def process_order(request):
                                                       quantity=value, price=price)
                         create_order_item.save()
 
+            for key in list(request.session.keys()):
+                if key == "cart":
+                    # Delete the key
+                    del request.session[key]
             messages.success(request, "Order Placed")
             return redirect('home')
     else :
