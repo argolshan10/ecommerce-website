@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    td , th , tr{
+      background-color : #8B0000 !important;
+    border: 1px solid #FFD700;
+    padding: 10px;
+    }
+
+    body {
+                background-color: #FFD700;
+                }
+    table {
+    border-collapse: collapse;
+  }
+    thead{
+    background-color : red !important;
+    }
+    a {
+  color: #FFD700; /* normal link color */
+  text-decoration: none; /* optional: remove underline */
+}
+
+
+</style>
+
+<div class = 'container'>
+    <div class = 'row'>
+        <center>
+            <div class = 'col-8' style="color: #8B0000">
+                <h3>Unposted Items</h3>
+                <table class="table table-striped table-hover table-bordered" style="background-color: #8B0000 !important;">
+                    <thead class="table-dark">
+                    <tr style="color: #FFD700 !important ;">
+                        <th scope="col">Order</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Customer Email</th>
+                        <th scope="col">Date Ordered</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in orders %}
+                    <tr>
+
+                        <td><a href="{% url 'orders' item.id %}">{{ item.id }}</a></td>
+                        <td><a href="{% url 'orders' item.id %}">${{ item.amount_paid }}</a></td>
+                        <td><a href="{% url 'orders' item.id %}">{{ item.email }}</a></td>
+                        <td><a href="{% url 'orders' item.id %}">{{ item.date_ordered }}</a></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </center>
+    </div>
+</div>
+{% endblock %}

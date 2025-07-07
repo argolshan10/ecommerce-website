@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+        body {
+                background-color: #FFD700;
+            }
+    a {
+  color: #FFD700; /* normal link color */
+  text-decoration: none; /* optional: remove underline */
+}
+
+</style>
+
+<div class = 'container'>
+    <div class = 'row'>
+        <center>
+            <div class = 'col-8' style="color: #8B0000">
+               <div class="card">
+
+                   <div class="card-header">
+                       Order {{order.id}} - ${{order.amount_paid}}
+
+                   </div>
+
+                   <div class="card-body">
+
+                       Email: {{ the_order.email}}<br/>
+                       {% if the_order.date_posted %}
+                       Date Posted: {{ the_order.date_posted}}
+                       {% else %}
+                       Date Ordered: {{ the_order.date_ordered}}
+                       {% endif %}
+                       <br/><br/>
+                       Full name : {{ the_order.full_name }}<br/>
+                       <pre>{{ the_order.posting_address }}
+                       </pre>
+                       {% for item in items %}
+                       Items : {{ item.product }} - {{ item.quantity }} - ${{ item.price }}<br/>
+
+                       {% endfor %}
+                       <br/><br/>
+                   </div>
+               </div>
+                <a href="{% url 'home' %}" class="btn btn-primary">Home</a>
+            </div>
+        </center>
+    </div>
+</div>
+{% endblock %}

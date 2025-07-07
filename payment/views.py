@@ -9,6 +9,33 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 
+def orders(request , pk):
+    if request.user.is_authenticated and request.user.is_superuser:
+        the_order = Order.objects.get(id=pk)
+        order_items = OrderItem.objects.filter(order_fk=pk)
+        return render(request, 'payment/orders.html', {'the_order' : the_order , 'order_items' : order_items})
+    else :
+        messages.success(request, "Access Denied")
+        return redirect('home')
+
+
+def posted_dash(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        orders = Order.objects.filter(posted=True)
+        return render(request, 'payment/posted_dash.html', {'orders' : orders})
+    else :
+        messages.success(request, "Access Denied")
+        return redirect('home')
+
+def not_posted_dash(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        orders = Order.objects.filter(posted=False)
+        return render(request, 'payment/not_posted_dash.html', {'orders' : orders})
+    else:
+        messages.success(request, "Access Denied")
+        return redirect('home')
+
+
 def process_order(request):
     if request.POST:
         cart = Card(request)
