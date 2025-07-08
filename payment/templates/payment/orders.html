@@ -18,7 +18,7 @@
                <div class="card">
 
                    <div class="card-header">
-                       Order {{order.id}} - ${{order.amount_paid}}
+                       Order {{the_order.id}} - ${{the_order.amount_paid}}
 
                    </div>
 
@@ -39,9 +39,24 @@
 
                        {% endfor %}
                        <br/><br/>
+                       {% if not the_order.posted %}
+                       <form method="POST">
+                           {% csrf_token %}
+                           <input type="hidden" name="posting_status" value="true">
+                           <button type="submit" class="btn btn-danger">Mark as Posted</button>
+                       </form>
+                       {% else %}
+                       <form method="POST">
+                           {% csrf_token %}
+                           <input type="hidden" name="posting_status" value="false">
+                           <button type="submit" class="btn btn-danger">Mark as not Posted</button>
+                       </form>
+                       {% endif %}
                    </div>
                </div>
+                <br/><br/>
                 <a href="{% url 'home' %}" class="btn btn-primary">Home</a>
+                <br/><br/>
             </div>
         </center>
     </div>

@@ -1,9 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
 <style>
-        body {
+          td , th , tr{
+      background-color : #8B0000 !important;
+    border: 1px solid #FFD700;
+    padding: 10px;
+    }
+
+    body {
                 background-color: #FFD700;
-            }
+                }
+    table {
+    border-collapse: collapse;
+  }
+    thead{
+    background-color : red !important;
+    }
     a {
   color: #FFD700; /* normal link color */
   text-decoration: none; /* optional: remove underline */
@@ -23,6 +35,7 @@
                         <th scope="col">Price</th>
                         <th scope="col">Customer Email</th>
                         <th scope="col">Date Posted</th>
+                        <th scope="col">Order Status</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -33,6 +46,14 @@
                         <td><a href="{% url 'orders' item.id %}">${{ item.amount_paid }}</a></td>
                         <td><a href="{% url 'orders' item.id %}">{{ item.email }}</a></td>
                         <td><a href="{% url 'orders' item.id %}">{{ item.date_posted }}</a></td>
+                        <td>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="posting_status" value="false">
+                                <input type="hidden" name="num" value={{item.id}}>
+                                <button type="submit" class="btn btn-danger btn-small">Mark as Unposted</button>
+                            </form>
+                        </td>
                     </tr>
                     {% endfor %}
                     </tbody>

@@ -36,6 +36,7 @@
                         <th scope="col">Price</th>
                         <th scope="col">Customer Email</th>
                         <th scope="col">Date Ordered</th>
+                        <th scope="col">Order Status</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -46,6 +47,14 @@
                         <td><a href="{% url 'orders' item.id %}">${{ item.amount_paid }}</a></td>
                         <td><a href="{% url 'orders' item.id %}">{{ item.email }}</a></td>
                         <td><a href="{% url 'orders' item.id %}">{{ item.date_ordered }}</a></td>
+                        <td>
+                             <form method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="posting_status" value="true">
+                                <input type="hidden" name="num" value={{item.id}}>
+                                <button type="submit" class="btn btn-success btn-small">Mark as posted</button>
+                            </form>
+                        </td>
                     </tr>
                     {% endfor %}
                     </tbody>

@@ -4,8 +4,9 @@ from django.contrib import messages
 from card.Card  import Card
 from payment.forms import PostingForm , PaymentForm
 from payment.models import PostingAddress ,OrderItem ,Order
-from core.models import product
+from core.models import product , Profile
 from django.contrib.auth.models import User
+import datetime
 
 # Create your views here.
 
@@ -13,6 +14,20 @@ def orders(request , pk):
     if request.user.is_authenticated and request.user.is_superuser:
         the_order = Order.objects.get(id=pk)
         order_items = OrderItem.objects.filter(order_fk=pk)
+        if request.POST:
+            status = request.POST['posting_status']
+
+            # check if true or false
+            if status == "true":
+                the_order = Order.objects.filter(id=pk)
+                now = datetime.datetime.now()
+                the_order.update(posted=True)
+            else :
+                the_order = Order.objects.filter(id=pk)
+                now = datetime.datetime.now()
+                the_order.update(posted=False)
+            messages.success(request , "Posting Status Updated")
+            return redirect('home')
         return render(request, 'payment/orders.html', {'the_order' : the_order , 'order_items' : order_items})
     else :
         messages.success(request, "Access Denied")
@@ -22,6 +37,18 @@ def orders(request , pk):
 def posted_dash(request):
     if request.user.is_authenticated and request.user.is_superuser:
         orders = Order.objects.filter(posted=True)
+
+        if request.POST:
+            status = request.POST['posting_status']
+            num = request.POST['num']
+            the_order = Order.objects.filter(id=num)
+
+            now = datetime.datetime.now()
+            the_order.update(posted=False)
+
+            messages.success(request, "Posting Status Updated")
+            return redirect('home')
+
         return render(request, 'payment/posted_dash.html', {'orders' : orders})
     else :
         messages.success(request, "Access Denied")
@@ -30,6 +57,19 @@ def posted_dash(request):
 def not_posted_dash(request):
     if request.user.is_authenticated and request.user.is_superuser:
         orders = Order.objects.filter(posted=False)
+
+        if request.POST:
+            status = request.POST['posting_status']
+            num = request.POST['num']
+
+            the_order = Order.objects.filter(id=num)
+
+            now = datetime.datetime.now()
+            the_order.update(posted=True , date_posted=now)
+
+            messages.success(request, "Posting Status Updated")
+            return redirect('home')
+
         return render(request, 'payment/not_posted_dash.html', {'orders' : orders})
     else:
         messages.success(request, "Access Denied")
@@ -79,6 +119,10 @@ def process_order(request):
                     # Delete the key
                     del request.session[key]
 
+
+            # delete cart from database
+            current_user = Profile.objects.filter(user__id=request.user.id)
+            current_user.update(old_cart="")
             messages.success(request, "Order Placed")
             return redirect('home')
         else :
