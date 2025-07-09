@@ -14,7 +14,7 @@ ENV/
 *.sqlite3
 db.sqlite3
 /media/
-/staticfiles/
+#/staticfiles/
 
 # VSCode or PyCharm
 .vscode/
